@@ -1,8 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
 
-posts = [
+posts: list[dict] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -49,15 +48,15 @@ posts = [
 def index(request):
     template_name = 'blog/index.html'
     context = {
-        'posts': posts[::-1]
+        'posts': reversed(posts)
     }
     return render(request, template_name, context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template_name = 'blog/detail.html'
     context = {
-        'post': posts[id],
+        'post': posts[post_id],
     }
     return render(request, template_name, context)
 
