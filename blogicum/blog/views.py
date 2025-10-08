@@ -1,5 +1,5 @@
+from django.http import Http404
 from django.shortcuts import render
-
 
 posts: list[dict] = [
     {
@@ -44,6 +44,8 @@ posts: list[dict] = [
     },
 ]
 
+posts_by_id = {post['id']: post for post in posts}
+
 
 def index(request):
     template_name = 'blog/index.html'
@@ -55,9 +57,11 @@ def index(request):
 
 def post_detail(request, post_id):
     template_name = 'blog/detail.html'
-    context = {
-        'post': posts[post_id],
-    }
+    try:
+        post = posts_by_id[post_id]
+        context = {'post': post}
+    except KeyError:
+        raise Http404
     return render(request, template_name, context)
 
 
